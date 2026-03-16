@@ -3,26 +3,34 @@ version: '3.8'
 services:
   traefik:
     image: traefik:v2.10
+    container_name: traefik
     command:
       - --providers.docker=true
+      - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       - --certificatesresolvers.le.acme.tlschallenge=true
       - --certificatesresolvers.le.acme.email=${LETSENCRYPT_EMAIL}
       - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
     ports:
+      - "80:80"
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./letsencrypt:/letsencrypt
     restart: unless-stopped
+    networks:
+      - agente-network
 
   n8n:
     image: n8nio/n8n:${N8N_VERSION}
+    container_name: n8n_prod
     environment:
       - N8N_HOST=${N8N_HOST}
       - N8N_PORT=5678
       - N8N_PROTOCOL=https
       - NODE_ENV=production
+      - N8N_EDITOR_BASE_URL=https://${N8N_HOST}
+      - N8N_WEBHOOK_TUNNEL_URL=https://${N8N_HOST}
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=db
       - DB_POSTGRESDB_PORT=5432
@@ -32,34 +40,90 @@ services:
       - N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE}
       - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
       - N8N_BASIC_AUTH_PASSWORD_FILE=/run/secrets/n8n_basic_auth_password
+      - WEBHOOK_TUNNEL_URL=https://${N8N_HOST}/
     volumes:
       - ./n8n_data:/home/node/.n8n
+    secrets:
+      - postgres_password
+      - n8n_basic_auth_password
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.n8n.rule=Host(`${N8N_HOST}`)"
       - "traefik.http.routers.n8n.entrypoints=websecure"
       - "traefik.http.routers.n8n.tls.certresolver=le"
+      - "traefik.http.services.n8n.loadbalancer.server.port=5678"
     restart: unless-stopped
+    networks:
+      - agente-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5678/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   db:
     image: postgres:15
+    container_name: postgres_prod
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+      - POSTGRES_INITDB_ARGS=-c shared_buffers=256MB -c max_connections=200
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+    secrets:
+      - postgres_password
     restart: unless-stopped
+    networks:
+      - agente-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -h localhost"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  evolution:
+    image: evolutionapi/evolution-api:v1.8.2
+    container_name: evolution_prod
+    restart: unless-stopped
+    environment:
+      - AUTH_AUTHENTICATION_API_KEY=${EVOLUTION_API_KEY}
+      - AUTH_AUTHENTICATION_GLOBAL_API_KEY=${EVOLUTION_API_KEY}
+      - SERVER_URL=https://${EVOLUTION_HOST}/api
+      - DATABASE_CONNECTION_URI=postgresql://${POSTGRES_USER}:$${POSTGRES_PASSWORD}@db:5432/evolution
+      - DATABASE_SAVE_DATA_INSTANCE=true
+      - DATABASE_SAVE_MESSAGE_UPDATE=true
+    volumes:
+      - evolution_instances:/evolution/instances
+      - evolution_store:/evolution/store
+    depends_on:
+      db:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.evolution.rule=Host(`${EVOLUTION_HOST}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.evolution.entrypoints=websecure"
+      - "traefik.http.routers.evolution.tls.certresolver=le"
+      - "traefik.http.services.evolution.loadbalancer.server.port=8080"
+    networks:
+      - agente-network
 
 secrets:
   postgres_password:
     file: ./secrets/postgres_password
   n8n_basic_auth_password:
     file: ./secrets/n8n_basic_auth_password
+volumes:
+  postgres_data:
+    driver: local
+  evolution_instances:
+    driver: local
+  evolution_store:
+    driver: local
+
+networks:
+  agente-network:
+    driver: bridge
