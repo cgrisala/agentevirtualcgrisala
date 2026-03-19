@@ -354,4 +354,4 @@ Todos los pendientes han sido implementados:
 
 ---
 
-**Creado por:** GitHub Copilot | **Fecha:** 16 de Marzo de 2026 | **Versión:** 1.0.0
+**Creado por:** GitHub cgrisala | **Fecha:** 16 de Marzo de 2026 | **Versión:** 1.0.0
