@@ -205,6 +205,64 @@ agente-virtual-cgrisala/
 └── 📁 .git/                     # Control de versiones
 ```
 
+## ⚙️ Configuración Inicial
+
+### Prerrequisitos
+- Node.js >= 18.0.0
+- npm >= 9.0.0
+- Docker & Docker Compose
+- PostgreSQL (o usar Docker)
+
+### Instalación
+
+1. **Clonar repositorio**
+   ```bash
+   git clone <repo-url>
+   cd agentevirtualcgrisala
+   ```
+
+2. **Backend**
+   ```bash
+   cd backend
+   npm install
+   cp .env.example .env  # Configurar variables
+   npm run dev
+   ```
+
+3. **Base de Datos**
+   ```bash
+   # Usar Docker o PostgreSQL local
+   # Configurar .env con credenciales BD
+   ```
+
+4. **n8n + WhatsApp**
+   ```bash
+   cd n8n-docker
+   docker compose up -d
+   ```
+
+### Docker local completo
+1. Desde la raíz del repositorio:
+   ```bash
+   docker compose up --build
+   ```
+2. Servicios disponibles:
+   - Backend: http://localhost:3000
+   - Frontend: http://localhost:3001
+   - PostgreSQL: localhost:5432
+   
+### Uso de Ramas
+- `main`: Rama principal, código estable
+- `develop`: Desarrollo activo
+- `feature/*`: Nuevas funcionalidades
+- `hotfix/*`: Corrección de bugs
+
+### Herramientas de Calidad
+- **ESLint**: Linting de código
+- **Prettier**: Formateo automático
+- **Vitest**: Testing unitario
+- **TypeScript**: Tipado estático
+
 ## 📚 Documentación Completa
 
 Documentación detallada disponible en carpeta `docs/`:
