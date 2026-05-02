@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import { logger } from '../utils/logger';
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/', (_req, res) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -12,7 +11,7 @@ router.get('/', (req, res) => {
   });
 });
 
-router.get('/db', async (req, res) => {
+router.get('/db', async (_req, res) => {
   // TODO: Implementar health check de BD
   res.json({
     status: 'ok',

@@ -48,3 +48,23 @@ export const updateGuestSchema = Joi.object({
   documentType: Joi.string(),
   documentNumber: Joi.string(),
 });
+
+export const createRoomSchema = Joi.object({
+  name: Joi.string().required(),
+  roomNumber: Joi.string().required(),
+  capacity: Joi.number().integer().min(1).required(),
+  pricePerNight: Joi.number().positive().required(),
+  type: Joi.string().valid('single', 'double', 'suite').required(),
+  amenities: Joi.array().items(Joi.string()).required(),
+  isActive: Joi.boolean(),
+});
+
+export const updateRoomSchema = Joi.object({
+  name: Joi.string(),
+  roomNumber: Joi.string(),
+  capacity: Joi.number().integer().min(1),
+  pricePerNight: Joi.number().positive(),
+  type: Joi.string().valid('single', 'double', 'suite'),
+  amenities: Joi.array().items(Joi.string()),
+  isActive: Joi.boolean(),
+});

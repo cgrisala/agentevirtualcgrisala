@@ -3,35 +3,35 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 @Entity('rooms')
 export class Room {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
-  @Column()
-  name: string;
+  @Column('varchar')
+  name!: string;
 
-  @Column({ unique: true })
-  roomNumber: string;
+  @Column('varchar', { unique: true })
+  roomNumber!: string;
 
   @Column('int')
-  capacity: number;
+  capacity!: number;
 
   @Column('decimal', { precision: 10, scale: 2 })
-  pricePerNight: number;
+  pricePerNight!: number;
 
   @Column({
     type: 'enum',
     enum: ['single', 'double', 'suite']
   })
-  type: 'single' | 'double' | 'suite';
+  type!: 'single' | 'double' | 'suite';
 
   @Column('simple-array')
-  amenities: string[];
+  amenities!: string[];
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column('boolean', { default: true })
+  isActive!: boolean;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

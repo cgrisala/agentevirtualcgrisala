@@ -3,35 +3,35 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 @Entity('guests')
 export class Guest {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
-  @Column()
-  firstName: string;
+  @Column('varchar')
+  firstName!: string;
 
-  @Column()
-  lastName: string;
+  @Column('varchar')
+  lastName!: string;
 
-  @Column({ unique: true })
-  email: string;
+  @Column('varchar', { unique: true })
+  email!: string;
 
-  @Column()
-  phone: string;
+  @Column('varchar')
+  phone!: string;
 
-  @Column({ nullable: true })
+  @Column('varchar', { nullable: true })
   whatsappPhone?: string;
 
-  @Column({ nullable: true })
+  @Column('varchar', { nullable: true })
   nationality?: string;
 
-  @Column({ nullable: true })
+  @Column('varchar', { nullable: true })
   documentType?: string;
 
-  @Column({ nullable: true })
+  @Column('varchar', { nullable: true })
   documentNumber?: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

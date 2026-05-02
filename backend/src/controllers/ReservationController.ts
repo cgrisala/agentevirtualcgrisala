@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { AppDataSource } from '../config/database';
-import { Reservation } from '../models/Reservation';
-import { ApiResponse, PaginatedResponse } from '../types';
+import { AppDataSource } from '../config/database.js';
+import { Reservation } from '../models/Reservation.js';
+import { ApiResponse, PaginatedResponse } from '../types/index.js';
 
 const reservationRepository = AppDataSource.getRepository(Reservation);
 
@@ -42,7 +42,7 @@ export class ReservationController {
 
   static async create(req: Request, res: Response): Promise<void> {
     try {
-      const reservation = reservationRepository.create(req.body);
+      const reservation = reservationRepository.create(req.body as Partial<Reservation>);
       await reservationRepository.save(reservation);
 
       const response: ApiResponse<Reservation> = {
@@ -154,7 +154,7 @@ export class ReservationController {
     }
   }
 
-  static async getTimeline(req: Request, res: Response): Promise<void> {
+  static async getTimeline(_req: Request, res: Response): Promise<void> {
     // Implement timeline logic
     res.json({ success: true, message: 'Timeline' });
   }
