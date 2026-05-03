@@ -4,7 +4,7 @@ export interface User {
   password: string;
   firstName: string;
   lastName: string;
-  role: 'admin' | 'staff' | 'guest';
+  role: 'admin' | 'staff' | 'guest' | 'manager';
   createdAt: Date;
   updatedAt: Date;
 }

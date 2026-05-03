@@ -82,7 +82,12 @@ src/
 ### Autenticación
 - `POST /api/auth/register` - Registro
 - `POST /api/auth/login` - Login
+- `POST /api/auth/forgot-password` - Solicitar restablecimiento de contraseña
+- `POST /api/auth/reset-password` - Restablecer contraseña
 - `POST /api/auth/refresh` - Refresh token
+
+### Chat / Agente Virtual
+- `POST /api/chat/send` - Enviar mensaje al agente virtual (requiere auth)
 
 ### Reservas
 - `GET /api/reservations` - Listar

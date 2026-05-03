@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { UnauthorizedError } from '../utils/errors';
-import { JwtPayload } from '../types';
+import { UnauthorizedError } from '../utils/errors.js';
+import { JwtPayload } from '../types/index.js';
 
 declare global {
   namespace Express {

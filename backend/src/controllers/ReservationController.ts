@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import { AppDataSource } from '../config/database.js';
-import { Reservation } from '../models/Reservation.js';
-import { ApiResponse, PaginatedResponse } from '../types/index.js';
+import { AppDataSource } from '../config/database';
+import { Reservation } from '../models/Reservation';
+import { ApiResponse, PaginatedResponse } from '../types';
+import { logger } from '../utils/logger';
 
 const reservationRepository = AppDataSource.getRepository(Reservation);
 
@@ -31,6 +32,7 @@ export class ReservationController {
       };
       res.json(response);
     } catch (error) {
+      logger.error('Failed to fetch reservations:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to fetch reservations',
@@ -43,15 +45,16 @@ export class ReservationController {
   static async create(req: Request, res: Response): Promise<void> {
     try {
       const reservation = reservationRepository.create(req.body as Partial<Reservation>);
-      await reservationRepository.save(reservation);
+      const saved = await reservationRepository.save(reservation);
 
       const response: ApiResponse<Reservation> = {
         success: true,
-        data: reservation,
+        data: saved as Reservation,
         timestamp: new Date().toISOString()
       };
       res.status(201).json(response);
     } catch (error) {
+      logger.error('Failed to create reservation:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to create reservation',
@@ -85,6 +88,7 @@ export class ReservationController {
       };
       res.json(response);
     } catch (error) {
+      logger.error('Failed to fetch reservation:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to fetch reservation',
@@ -117,6 +121,7 @@ export class ReservationController {
       };
       res.json(response);
     } catch (error) {
+      logger.error('Failed to update reservation:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to update reservation',
@@ -145,6 +150,7 @@ export class ReservationController {
       };
       res.status(204).json(response);
     } catch (error) {
+      logger.error('Failed to delete reservation:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to delete reservation',

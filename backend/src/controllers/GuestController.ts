@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import { AppDataSource } from '../config/database';
-import { Guest } from '../models/Guest';
-import { ApiResponse, PaginatedResponse } from '../types';
+import { AppDataSource } from '../config/database.js';
+import { Guest } from '../models/Guest.js';
+import { ApiResponse, PaginatedResponse } from '../types/index.js';
+import { logger } from '../utils/logger.js';
 
 const guestRepository = AppDataSource.getRepository(Guest);
 
@@ -30,6 +31,7 @@ export class GuestController {
       };
       res.json(response);
     } catch (error) {
+      logger.error('Failed to fetch guests:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to fetch guests',
@@ -41,7 +43,7 @@ export class GuestController {
 
   static async create(req: Request, res: Response): Promise<void> {
     try {
-      const guest = guestRepository.create(req.body);
+      const guest = guestRepository.create(req.body as Partial<Guest>);
       await guestRepository.save(guest);
 
       const response: ApiResponse<Guest> = {
@@ -51,6 +53,7 @@ export class GuestController {
       };
       res.status(201).json(response);
     } catch (error) {
+      logger.error('Failed to create guest:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to create guest',
@@ -80,6 +83,7 @@ export class GuestController {
       };
       res.json(response);
     } catch (error) {
+      logger.error('Failed to fetch guest:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to fetch guest',
@@ -112,6 +116,7 @@ export class GuestController {
       };
       res.json(response);
     } catch (error) {
+      logger.error('Failed to update guest:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to update guest',
@@ -140,6 +145,7 @@ export class GuestController {
       };
       res.status(204).json(response);
     } catch (error) {
+      logger.error('Failed to delete guest:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to delete guest',

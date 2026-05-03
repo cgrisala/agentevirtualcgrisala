@@ -1,2 +1,0 @@
-{"__type":"$$EventMessageAudit","id":"0f1abee3-b9e5-4900-9297-959f9d170fba","ts":"2026-03-29T16:47:37.742+00:00","eventName":"n8n.audit.user.login.success","message":"n8n.audit.user.login.success","payload":{"userId":"b453ac22-8f86-4543-a717-fbe91b9ca37d","_email":"dev.neoiris@gmail.com","_firstName":"cgrisala","_lastName":"Neoiris","globalRole":"global:owner","authenticationMethod":"email"}}
-{"__type":"$$EventMessageConfirm","confirm":"0f1abee3-b9e5-4900-9297-959f9d170fba","ts":"2026-03-29T16:47:37.743+00:00","source":{"id":"0","name":"eventBus"}}

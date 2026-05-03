@@ -3,18 +3,18 @@ import 'express-async-errors';
 import helmet from 'helmet';
 import cors from 'cors';
 import { config } from 'dotenv';
-import { logger } from './utils/logger';
-import { errorHandler } from './middleware/errorHandler';
-import { requestLogger } from './middleware/requestLogger';
-import { AppDataSource } from './config/database';
+import { logger } from './utils/logger.js';
+import { errorHandler } from './middleware/errorHandler.js';
+import { requestLogger } from './middleware/requestLogger.js';
+import { AppDataSource } from './config/database.js';
 
 // Routes
-import authRoutes from './routes/auth';
-import reservationRoutes from './routes/reservations';
-import guestRoutes from './routes/guests';
-import roomRoutes from './routes/rooms';
-import webhookRoutes from './routes/webhooks';
-import healthRoutes from './routes/health';
+import authRoutes from './routes/auth.js';
+import reservationRoutes from './routes/reservations.js';
+import guestRoutes from './routes/guests.js';
+import roomRoutes from './routes/rooms.js';
+import webhookRoutes from './routes/webhooks.js';
+import healthRoutes from './routes/health.js';
 
 config();
 
@@ -41,10 +41,10 @@ app.use('/api/reservations', reservationRoutes);
 app.use('/api/guests', guestRoutes);
 app.use('/api/rooms', roomRoutes);
 app.use('/api/webhooks', webhookRoutes);
-app.use('/health', healthRoutes);
+app.use('/api/health', healthRoutes);
 
 // 404 handler
-app.use((req, res) => {
+app.use((_req, res) => {
   res.status(404).json({ error: 'Not found' });
 });
 

@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { authenticate, authorize } from '../middleware/authentication';
-import { validate } from '../middleware/validation';
-import { createGuestSchema, updateGuestSchema } from '../validators/schemas';
-import { GuestController } from '../controllers/GuestController';
+import { authenticate, authorize } from '../middleware/authentication.js';
+import { validate } from '../middleware/validation.js';
+import { createGuestSchema, updateGuestSchema } from '../validators/schemas.js';
+import { GuestController } from '../controllers/GuestController.js';
 
 const router = Router();
 

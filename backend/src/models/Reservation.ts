@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Guest } from './Guest';
-import { Room } from './Room';
+import { Guest } from './Guest.js';
+import { Room } from './Room.js';
 
 @Entity('reservations')
 export class Reservation {

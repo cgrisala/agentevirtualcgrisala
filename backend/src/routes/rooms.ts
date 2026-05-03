@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { authenticate, authorize } from '../middleware/authentication';
-import { validate } from '../middleware/validation';
-import { createRoomSchema, updateRoomSchema } from '../validators/schemas';
-import { RoomController } from '../controllers/RoomController';
+import { authenticate, authorize } from '../middleware/authentication.js';
+import { validate } from '../middleware/validation.js';
+import { createRoomSchema, updateRoomSchema } from '../validators/schemas.js';
+import { RoomController } from '../controllers/RoomController.js';
 
 const router = Router();
 

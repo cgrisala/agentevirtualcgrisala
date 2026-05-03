@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { authenticate, authorize } from '../middleware/authentication';
-import { validate } from '../middleware/validation';
-import { createReservationSchema, updateReservationSchema } from '../validators/schemas';
-import { ReservationController } from '../controllers/ReservationController';
+import { authenticate, authorize } from '../middleware/authentication.js';
+import { validate } from '../middleware/validation.js';
+import { createReservationSchema, updateReservationSchema } from '../validators/schemas.js';
+import { ReservationController } from '../controllers/ReservationController.js';
 
 const router = Router();
 

@@ -5,34 +5,34 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column('varchar', { unique: true })
+  @Column({ unique: true })
   email!: string;
 
-  @Column('varchar')
+  @Column()
   password!: string;
 
-  @Column('varchar')
+  @Column()
   firstName!: string;
 
-  @Column('varchar')
+  @Column()
   lastName!: string;
-
-  @Column({ type: 'varchar', nullable: true })
-  resetPasswordToken?: string | null;
-
-  @Column({ type: 'timestamp', nullable: true })
-  resetPasswordExpiresAt?: Date | null;
 
   @Column({
     type: 'enum',
-    enum: ['admin', 'staff', 'guest', 'manager'],
+    enum: ['admin', 'staff', 'guest'],
     default: 'guest'
   })
-  role!: 'admin' | 'staff' | 'guest' | 'manager';
+  role!: 'admin' | 'staff' | 'guest';
 
   @CreateDateColumn()
   createdAt!: Date;
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @Column({ nullable: true })
+  resetPasswordToken?: string | null;
+
+  @Column({ nullable: true })
+  resetPasswordExpiresAt?: Date | null;
 }

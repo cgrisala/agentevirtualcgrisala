@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import { AppDataSource } from '../config/database';
-import { Room } from '../models/Room';
-import { ApiResponse, PaginatedResponse } from '../types';
+import { AppDataSource } from '../config/database.js';
+import { Room } from '../models/Room.js';
+import { ApiResponse, PaginatedResponse } from '../types/index.js';
+import { logger } from '../utils/logger.js';
 
 const roomRepository = AppDataSource.getRepository(Room);
 
@@ -30,6 +31,7 @@ export class RoomController {
       };
       res.json(response);
     } catch (error) {
+      logger.error('Failed to fetch rooms:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to fetch rooms',
@@ -41,7 +43,7 @@ export class RoomController {
 
   static async create(req: Request, res: Response): Promise<void> {
     try {
-      const room = roomRepository.create(req.body);
+      const room = roomRepository.create(req.body as Partial<Room>);
       await roomRepository.save(room);
 
       const response: ApiResponse<Room> = {
@@ -51,6 +53,7 @@ export class RoomController {
       };
       res.status(201).json(response);
     } catch (error) {
+      logger.error('Failed to create room:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to create room',
@@ -80,6 +83,7 @@ export class RoomController {
       };
       res.json(response);
     } catch (error) {
+      logger.error('Failed to fetch room:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to fetch room',
@@ -112,6 +116,7 @@ export class RoomController {
       };
       res.json(response);
     } catch (error) {
+      logger.error('Failed to update room:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to update room',
@@ -140,6 +145,7 @@ export class RoomController {
       };
       res.status(204).json(response);
     } catch (error) {
+      logger.error('Failed to delete room:', error);
       const response: ApiResponse<null> = {
         success: false,
         error: 'Failed to delete room',

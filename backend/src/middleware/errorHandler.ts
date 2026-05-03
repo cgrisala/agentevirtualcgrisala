@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { logger } from '../utils/logger';
-import { ApiError } from '../utils/errors';
+import { logger } from '../utils/logger.js';
+import { ApiError } from '../utils/errors.js';
 
 export const errorHandler = (
   err: Error | ApiError,
-  req: Request,
+  _req: Request,
   res: Response,
   _next: NextFunction
 ): void => {

@@ -12,6 +12,15 @@ export const registerSchema = Joi.object({
   lastName: Joi.string().required(),
 });
 
+export const forgotPasswordSchema = Joi.object({
+  email: Joi.string().email().required(),
+});
+
+export const resetPasswordSchema = Joi.object({
+  token: Joi.string().required(),
+  password: Joi.string().min(8).required(),
+});
+
 export const createReservationSchema = Joi.object({
   guestId: Joi.string().uuid().required(),
   roomId: Joi.string().uuid().required(),
