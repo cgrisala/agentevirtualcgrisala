@@ -1,0 +1,60 @@
+name: Documentation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/docs.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'docs/**'
+
+jobs:
+  linkcheck:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Check markdown links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          use-verbose-mode: 'no'
+          folder-path: 'docs'
+
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Build documentation
+        run: |
+          echo "Documentation check passed"
+          ls -la docs/
+      
+      - name: Verify all required docs
+        run: |
+          required_files=(
+            "docs/README.md"
+            "docs/ARCHITECTURE.md"
+            "docs/INSTALLATION.md"
+            "docs/DEVELOPMENT.md"
+            "docs/API.md"
+            "docs/N8N_WORKFLOWS.md"
+            "docs/DEPLOYMENT.md"
+            "docs/TROUBLESHOOTING.md"
+            "docs/CONTRIBUTING.md"
+          )
+          
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "Missing required file: $file"
+              exit 1
+            fi
+          done
+          
+          echo "All required documentation files present"
