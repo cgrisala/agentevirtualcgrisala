@@ -1,0 +1,74 @@
+# Alert rules for Agente Virtual
+
+groups:
+  - name: system
+    interval: 30s
+    rules:
+      - alert: HighCPUUsage
+        expr: node_cpu_seconds_total > 80
+        for: 5m
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is above 80%"
+
+      - alert: HighMemoryUsage
+        expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes < 0.2
+        for: 5m
+        annotations:
+          summary: "High memory usage detected"
+          description: "Available memory is below 20%"
+
+      - alert: DiskSpaceLow
+        expr: node_filesystem_avail_bytes / node_filesystem_size_bytes < 0.1
+        for: 5m
+        annotations:
+          summary: "Disk space low"
+          description: "Available disk space is below 10%"
+
+  - name: services
+    interval: 30s
+    rules:
+      - alert: N8NDown
+        expr: up{job="n8n"} == 0
+        for: 5m
+        annotations:
+          summary: "n8n service is down"
+          description: "n8n service is not responding"
+
+      - alert: PostgresDown
+        expr: up{job="postgres"} == 0
+        for: 5m
+        annotations:
+          summary: "PostgreSQL service is down"
+          description: "PostgreSQL service is not responding"
+
+      - alert: EvolutionDown
+        expr: up{job="evolution"} == 0
+        for: 5m
+        annotations:
+          summary: "Evolution API service is down"
+          description: "Evolution API service is not responding"
+
+      - alert: APIDown
+        expr: up{job="api"} == 0
+        for: 5m
+        annotations:
+          summary: "Backend API service is down"
+          description: "Backend API service is not responding"
+
+  - name: database
+    interval: 30s
+    rules:
+      - alert: HighDatabaseConnections
+        expr: pg_stat_activity_count > 150
+        for: 5m
+        annotations:
+          summary: "High database connections"
+          description: "Number of active connections > 150"
+
+      - alert: LongRunningQueries
+        expr: pg_stat_statements_max_time_seconds > 30
+        for: 5m
+        annotations:
+          summary: "Long running database query"
+          description: "Query has been running for more than 30 seconds"

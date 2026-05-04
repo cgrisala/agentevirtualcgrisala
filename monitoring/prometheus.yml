@@ -1,0 +1,43 @@
+# Prometheus configuration for Agente Virtual CGrisala
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - localhost:9093
+
+rule_files:
+  - "alerts.yml"
+
+scrape_configs:
+  # n8n metrics
+  - job_name: 'n8n'
+    static_configs:
+      - targets: ['localhost:5678']
+    metrics_path: '/metrics'
+
+  # PostgreSQL metrics
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['localhost:5432']
+
+  # Evolution API
+  - job_name: 'evolution'
+    static_configs:
+      - targets: ['localhost:8080']
+    metrics_path: '/metrics'
+
+  # Backend API
+  - job_name: 'api'
+    static_configs:
+      - targets: ['localhost:3000']
+    metrics_path: '/metrics'
+
+  # Prometheus self
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
