@@ -5,28 +5,28 @@ export class Guest {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   firstName!: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   lastName!: string;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', unique: true })
   email!: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   phone!: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   whatsappPhone?: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   nationality?: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   documentType?: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   documentNumber?: string;
 
   @CreateDateColumn()

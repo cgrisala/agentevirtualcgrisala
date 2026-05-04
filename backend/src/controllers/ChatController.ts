@@ -6,7 +6,6 @@ export class ChatController {
   static async sendMessage(req: Request, res: Response): Promise<void> {
     try {
       const { message } = req.body;
-      // const user = req.user; // From authentication middleware - TODO: use for user context
 
       // Aquí se integraría con n8n para enviar el mensaje
       // Por ahora, simulamos una respuesta automática
@@ -21,13 +20,6 @@ export class ChatController {
       } else {
         responseMessage = 'Gracias por tu mensaje. Un agente de recepción se pondrá en contacto contigo pronto. También puedes llamarnos al +57 123 456 7890.';
       }
-
-      // TODO: Integrar con n8n webhook para enviar mensaje real por WhatsApp
-      // const n8nResponse = await axios.post(process.env.N8N_WEBHOOK_URL!, {
-      //   message,
-      //   userId: user.id,
-      //   timestamp: new Date().toISOString()
-      // });
 
       const response: ApiResponse<{ message: string }> = {
         success: true,

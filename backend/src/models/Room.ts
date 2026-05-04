@@ -5,10 +5,10 @@ export class Room {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   name!: string;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', unique: true })
   roomNumber!: string;
 
   @Column('int')
@@ -26,7 +26,7 @@ export class Room {
   @Column('simple-array')
   amenities!: string[];
 
-  @Column({ default: true })
+  @Column({ type: 'boolean', default: true })
   isActive!: boolean;
 
   @CreateDateColumn()

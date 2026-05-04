@@ -9,8 +9,8 @@ const reservationRepository = AppDataSource.getRepository(Reservation);
 export class ReservationController {
   static async getAll(req: Request, res: Response): Promise<void> {
     try {
-      const page = parseInt(req.query.page as string) || 1;
-      const pageSize = parseInt(req.query.pageSize as string) || 10;
+      const page = Number.parseInt(req.query.page as string) || 1;
+      const pageSize = Number.parseInt(req.query.pageSize as string) || 10;
 
       const [reservations, total] = await reservationRepository.findAndCount({
         relations: ['guest', 'room'],
@@ -49,7 +49,7 @@ export class ReservationController {
 
       const response: ApiResponse<Reservation> = {
         success: true,
-        data: saved as Reservation,
+        data: saved,
         timestamp: new Date().toISOString()
       };
       res.status(201).json(response);

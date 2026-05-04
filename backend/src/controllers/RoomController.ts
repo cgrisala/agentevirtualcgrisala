@@ -9,8 +9,8 @@ const roomRepository = AppDataSource.getRepository(Room);
 export class RoomController {
   static async getAll(req: Request, res: Response): Promise<void> {
     try {
-      const page = parseInt(req.query.page as string) || 1;
-      const pageSize = parseInt(req.query.pageSize as string) || 10;
+      const page = Number.parseInt(req.query.page as string) || 1;
+      const pageSize = Number.parseInt(req.query.pageSize as string) || 10;
 
       const [rooms, total] = await roomRepository.findAndCount({
         skip: (page - 1) * pageSize,

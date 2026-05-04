@@ -10,8 +10,8 @@ const userRepository = AppDataSource.getRepository(User);
 export class UserController {
   static async getAll(req: Request, res: Response): Promise<void> {
     try {
-      const page = parseInt(req.query.page as string) || 1;
-      const pageSize = parseInt(req.query.pageSize as string) || 10;
+      const page = Number.parseInt(req.query.page as string) || 1;
+      const pageSize = Number.parseInt(req.query.pageSize as string) || 10;
 
       const [users, total] = await userRepository.findAndCount({
         select: ['id', 'email', 'firstName', 'lastName', 'role', 'createdAt', 'updatedAt'],
